@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,14 +73,12 @@ public class UsuarioController {
 	// CADASTRAR UM USUARIO
 	@PostMapping("/cadastrar")
 	public ResponseEntity<?> post(@Valid @RequestBody Usuario usuario) {
-		// VERIFICA SE O EMAIL JÁ ESTÁ CADASTRADO
-		Optional<Usuario> usuarioExistente = usuarioRepository.findByUsuario(usuario.getUsuario());
-		if (usuarioExistente.isPresent()) {
-			return ResponseEntity
-					.status(HttpStatus.BAD_REQUEST)
-					.body("Erro: este e-mail já está cadastrado.");
+		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
+			 ResponseEntity.badRequest();
 		}
-		// SE ESTIVER TUDO NOS CONFORMES, SALVA O USUARIO
+		
+		usuario.setSenha(criptografarSenha(usuario.getSenha()));
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(usuario));
 	}
 	
@@ -104,7 +103,7 @@ public class UsuarioController {
 
 	@PostMapping("/logar")
 	public ResponseEntity <UsuarioLogin> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
-
+		System.out.println("chegou aki");
 		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),
 				usuarioLogin.get().getSenha());
 
@@ -133,6 +132,11 @@ public class UsuarioController {
 	
 	private String gerarToken(String usuario) {
 		return "Bearer " + jwtService.generateToken(usuario);
+	}
+	
+	public String criptografarSenha(String senha) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		return encoder.encode(senha);
 	}
 	
 }
