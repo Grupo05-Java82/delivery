@@ -2,11 +2,15 @@ package com.generation.delivery.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -41,15 +45,15 @@ public class Produto {
 	@NotBlank(message = "O Atributo ingrediente é obrigatório para sabermos a descrição do produto")
 	private String ingrediente;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "id_categoria") // Nome da coluna da chave estrangeira
-//	@JsonIgnoreProperties("produto") // Corrigido para corresponder à lista em Usuario
-//	private Categoria id_categoria;
-//	
-//	@ManyToOne
-//	@JoinColumn(name = "id_usuario") // Nome da coluna da chave estrangeira
-//	@JsonIgnoreProperties("produto") // Corrigido para corresponder à lista em Usuario
-//	private Usuario id_usuario;
+	@ManyToOne
+	@JoinColumn(name = "id_categoria") // Nome da coluna da chave estrangeira
+	@JsonIgnoreProperties("produto") // Corrigido para corresponder à lista em Usuario
+	private Categoria id_categoria;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_usuario") // Nome da coluna da chave estrangeira
+	@JsonIgnoreProperties("produto") // Corrigido para corresponder à lista em Usuario
+	private Usuario id_usuario;
 	
 	
 	public Long getId() {
@@ -101,21 +105,21 @@ public class Produto {
 		this.ingrediente = ingrediente;
 	}
 
-//	public Usuario getId_categoria() {
-//		return id_categoria;
-//	}
-//
-//	public void setId_categoria(Usuario id_categoria) {
-//		this.id_categoria = id_categoria;
-//	}
-//
-//	public Categoria getId_usuario() {
-//		return id_usuario;
-//	}
-//
-//	public void setId_usuario(Categoria id_usuario) {
-//		this.id_usuario = id_usuario;
-//	}
+	public Categoria getId_categoria() {
+		return id_categoria;
+	}
+
+	public void setId_categoria(Categoria id_categoria) {
+		this.id_categoria = id_categoria;
+	}
+
+	public Usuario getId_usuario() {
+		return id_usuario;
+	}
+
+	public void setId_usuario(Usuario id_usuario) {
+		this.id_usuario = id_usuario;
+	}
 
 
 }
