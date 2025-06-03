@@ -103,7 +103,7 @@ public class UsuarioController {
 
 
 	@PostMapping("/logar")
-	public ResponseEntity <Optional <UsuarioLogin>> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
+	public ResponseEntity <UsuarioLogin> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
 
 		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),
 				usuarioLogin.get().getSenha());
@@ -122,7 +122,8 @@ public class UsuarioController {
 				usuarioLogin.get().setSenha("");
 				usuarioLogin.get().setToken(gerarToken(usuarioLogin.get().getUsuario()));
 				
-				return ResponseEntity.ok().body(usuarioLogin);
+				System.out.println(usuarioLogin.get());
+				return ResponseEntity.ok().body(usuarioLogin.get());
 				
 			}
 		}
