@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
-// import org.springframework.web.bind.annotation.DeleteMapping; // REMOVER OU COMENTAR
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.delivery.model.UsuarioLogin;
 import com.generation.delivery.model.Usuario;
+import com.generation.delivery.model.UsuarioLogin;
 import com.generation.delivery.repository.UsuarioRepository;
+import com.generation.delivery.security.JwtService;
 
 import jakarta.validation.Valid;
 
@@ -29,7 +32,13 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 	
 	@Autowired
-	UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+    private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	// BUSCAR TODOS OS USUARIOS REGISTRADOS
 	@GetMapping
@@ -94,7 +103,7 @@ public class UsuarioController {
 
 
 	@PostMapping("/logar")
-	public ResponseEntity<UsuarioLogin> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
+	public ResponseEntity <Optional <UsuarioLogin>> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
 
 		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),
 				usuarioLogin.get().getSenha());
@@ -118,8 +127,13 @@ public class UsuarioController {
 			}
 		}
 
-		return ResponseEntity.notFound();
+		return ResponseEntity.notFound().build();
 	}
+	
+	private String gerarToken(String usuario) {
+		return "Bearer " + jwtService.generateToken(usuario);
+	}
+	
 }
 	
 	// ***** O MÉTODO DELETE PARA USUARIO FOI REMOVIDO/COMENTADO CONFORME REQUISITO DO PROFESSOR *****
