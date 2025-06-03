@@ -29,6 +29,11 @@ public class Produto {
 	@DecimalMin(value = "0.0", inclusive = false, message = "O preço do produto deve ser maior que zero.")
 	private BigDecimal preco;
 	
+	
+	@Size(max = 5000, message = "O tamanho maximo do atributo imagem é de 5000 caracteres")
+	private String imagem;
+	
+
 	@Size(min=1, max=1, message = "O atributo nutriscore deve ser A,B,C,D,E") // Ajustado tamanho para mais flexibilidade
 	private char nutriScore;
 	
@@ -70,6 +75,15 @@ public class Produto {
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
+	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
 
 	public char getNutriScore() {
 		return nutriScore;
