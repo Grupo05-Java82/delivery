@@ -9,11 +9,11 @@ import com.generation.delivery.model.Produto;
 
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long>{
-	List<Produto> findAllProductsByNomeContainsIgnoreCase(String titulo);
+	List<Produto> findAllProductsByNomeContainingIgnoreCase(String nomeProduto);
 	
 	List<Produto> findAllByPrecoIsLessThan (Double preco ) ;
 	
 	List<Produto> findAllByPrecoIsGreaterThan(Double preco);
 	
-	
+	List<Produto> findAllByIngredienteContainingIgnoreCase(String ingrediente);
 }
