@@ -35,6 +35,19 @@ public class Categoria {
 	@NotBlank(message = "O atributo é obrigatório")
 	@Column(length = 500)
 	String imagem;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id_categoria", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("id_categoria")
+	private List<Produto> produto;
+	
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
+	}
 
 	public Long getId() {
 		return id;

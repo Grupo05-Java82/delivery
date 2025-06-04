@@ -28,7 +28,7 @@ import com.generation.delivery.security.JwtService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
 	
@@ -42,7 +42,7 @@ public class UsuarioController {
 	private JwtService jwtService;
 	
 	// BUSCAR TODOS OS USUARIOS REGISTRADOS
-	@GetMapping
+	@GetMapping("/usuarios")
 	public ResponseEntity<List<Usuario>> getAll(){
 		return ResponseEntity.ok(usuarioRepository.findAll());
 	}
@@ -71,7 +71,7 @@ public class UsuarioController {
 	}
 		
 	// CADASTRAR UM USUARIO
-	@PostMapping("/cadastrar")
+	@PostMapping("/usuarios/cadastrar")
 	public ResponseEntity<?> post(@Valid @RequestBody Usuario usuario) {
 		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
 			 ResponseEntity.badRequest();
@@ -83,7 +83,7 @@ public class UsuarioController {
 	}
 	
 	// ATUALIZAR O USUARIO ESCOLHIDO
-	@PutMapping
+	@PutMapping("/usuarios/atualizar")
 	public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario) {
 		// Verifica se o ID do usuário existe para atualização
 		if (usuario.getId() == null || !usuarioRepository.existsById(usuario.getId())) {
@@ -101,7 +101,7 @@ public class UsuarioController {
 	}
 
 
-	@PostMapping("/logar")
+	@PostMapping("/usuarios/logar")
 	public ResponseEntity <UsuarioLogin> autenticarUsuario(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin ) {
 		System.out.println("chegou aki");
 		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),

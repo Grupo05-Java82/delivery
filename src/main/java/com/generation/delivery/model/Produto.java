@@ -39,9 +39,9 @@ public class Produto {
 	
 
 	@Size(min=1, max=1, message = "O atributo nutriscore deve ser A,B,C,D,E") // Ajustado tamanho para mais flexibilidade
-	private char nutriScore;
+	private String nutriScore;
 	
-	@Size(min = 1, max=255, message = "O atributo ingrediente deve ter entre 1 e 255 caracteres") // Adicionado min
+	@Size(min = 1, max=500, message = "O atributo ingrediente deve ter entre 1 e 255 caracteres") // Adicionado min
 	@NotBlank(message = "O Atributo ingrediente é obrigatório para sabermos a descrição do produto")
 	private String ingrediente;
 	
@@ -89,11 +89,11 @@ public class Produto {
 	}
 
 
-	public char getNutriScore() {
+	public String getNutriScore() {
 		return nutriScore;
 	}
 
-	public void setNutriScore(char nutriScore) {
+	public void setNutriScore(String nutriScore) {
 		this.nutriScore = nutriScore;
 	}
 
