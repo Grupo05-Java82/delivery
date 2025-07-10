@@ -64,6 +64,8 @@ public class BasicSecurityConfig {
 	        .authorizeHttpRequests((auth) -> auth
 	                .requestMatchers("/usuarios/logar").permitAll()
 	                .requestMatchers("/usuarios/cadastrar").permitAll()
+			.requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+    			.requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()	       
 	                .requestMatchers("/v3/api-docs/**").permitAll() // Permite acesso aos documentos OpenAPI
 	                .requestMatchers("/swagger-ui.html").permitAll() // Permite acesso à página principal do Swagger UI
 	                .requestMatchers("/swagger-ui/**").permitAll()   // Permite acesso a todos os recursos (CSS, JS, etc.) do Swagger UI
